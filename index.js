@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const port = 3000;
 const users = require("./data/users.js");
+const posts = require("./data/posts.js");
+const comments = require("./data/comments.js");
 const fs = require("fs");
 const bodyParser = require("body-parser");
 const { updateFile } = require("./functions/functions.js");
@@ -37,7 +39,7 @@ app.post("/api/users", (req, res) => {
       return;
     }
     const user = {
-      id: users[users.length - 1].id + 1 || 1,
+      id: users[users.length - 1]?.id + 1 || 1,
       fname,
       lname,
       username,
@@ -61,9 +63,46 @@ app.get("/api/users", (req, res) => {
 app.get("/api/users/:id", (req, res) => {
   const user = users.find((user) => user.id == req.params.id);
   if (user) {
-    res.status(200).json(user);
+    res.status(200).json({ user, success: true });
   } else {
-    res.status(400).json({ error: "Insufficient Data" });
+    res.status(400).json({ error: "Insufficient Data", success: false });
+  }
+});
+
+app.get("/api/posts", (req, res) => {
+  res.status(200).json({
+    posts,
+    success: true,
+  });
+});
+
+app.get("/api/posts", (req, res) => {
+  const post = posts.find((post) => post.id == req.params.id);
+  res.status(200).json({
+    post,
+    success: true,
+  });
+});
+
+app.post("/api/posts", (req, res) => {
+  const { title, description, username } = req.body;
+
+  if (title && description && username) {
+    const post = {
+      id: posts[posts.length - 1]?.id + 1 || 1,
+      title,
+      description,
+      username,
+    };
+
+    posts.push(post);
+    updateFile("./data/posts.js", posts);
+    res.status(201).json({
+      post,
+      success: true,
+    });
+  } else {
+    res.status(400).json({ error: "Insufficient Data", success: false });
   }
 });
 
