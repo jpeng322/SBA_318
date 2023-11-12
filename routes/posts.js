@@ -1,28 +1,33 @@
 const { updateFile } = require("../functions/functions.js");
 const posts = require("../data/posts.js");
+const users = require("../data/users.js");
 const express = require("express");
 router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/", (req, res, next) => {
   res.status(200).json({
     posts,
     success: true,
   });
+  res.body = posts;
+  next();
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", (req, res, next) => {
   const post = posts.find((post) => post.id === parseInt(req.params.id));
   if (post) {
     res.status(200).json({
       post,
       success: true,
     });
+    res.body = post;
   } else {
-    res.status(404).json({ error: "Not found", success: false });
+    res.status(404);
   }
+  next();
 });
 
-router.post("/", (req, res) => {
+router.post("/", (req, res, next) => {
   const { title, description, username } = req.body;
 
   if (title && description && username) {
@@ -39,9 +44,11 @@ router.post("/", (req, res) => {
       post,
       success: true,
     });
+    res.body = post;
   } else {
-    res.status(400).json({ error: "Insufficient Data", success: false });
+    res.status(400);
   }
+  next();
 });
 
 module.exports = router;

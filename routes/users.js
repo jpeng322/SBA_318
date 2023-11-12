@@ -1,20 +1,9 @@
 const users = require("../data/users.js");
 const { updateFile } = require("../functions/functions.js");
 const express = require("express");
-router = express.Router()
+router = express.Router();
 
-function isUser(req, res, next) {
-    console.log("checking for user")
-    const { fname, lname, username, email } = req.body;
-    if (fname && lname && username && email) {
-      next()
-    } else {
-      res.status(401).send("Not authorized.")
-    }
-    next()
-}
-  
-router.post("/", isUser, (req, res) => {
+router.post("/", (req, res, next) => {
   const { fname, lname, username, email } = req.body;
   if (fname && lname && username && email) {
     if (users.find((user) => user.email === email)) {
@@ -39,23 +28,34 @@ router.post("/", isUser, (req, res) => {
       user,
       success: true,
     });
+    res.body = user
   } else {
-    res.status(400).json({ error: "Insufficient Data" });
+    res.status(400);
   }
+
+  next();
 });
 
-router.get("/", isUser, (req, res) => {
-  console.log("dsadsad123");
-  res.json(users);
+router.get("/", (req, res, next) => {
+  res.status(200).json({
+    users,
+    success: true,
+  });
+  res.body = users;
+  next();
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", (req, res, next) => {
   const user = users.find((user) => user.id === parseInt(req.params.id));
+
   if (user) {
     res.status(200).json({ user, success: true });
   } else {
-    res.status(404).json({ error: "Not found", success: false });
+    res.status(404);
   }
+  res.body = user;
+
+  next();
 });
 
 module.exports = router;
