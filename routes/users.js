@@ -1,10 +1,20 @@
 const users = require("../data/users.js");
 const { updateFile } = require("../functions/functions.js");
 const express = require("express");
-router = express.Router();
+router = express.Router()
 
-router.post("/", (req, res) => {
-  console.log(req.body);
+function isUser(req, res, next) {
+    console.log("checking for user")
+    const { fname, lname, username, email } = req.body;
+    if (fname && lname && username && email) {
+      next()
+    } else {
+      res.status(401).send("Not authorized.")
+    }
+    next()
+}
+  
+router.post("/", isUser, (req, res) => {
   const { fname, lname, username, email } = req.body;
   if (fname && lname && username && email) {
     if (users.find((user) => user.email === email)) {
@@ -34,7 +44,8 @@ router.post("/", (req, res) => {
   }
 });
 
-router.get("/", (req, res) => {
+router.get("/", isUser, (req, res) => {
+  console.log("dsadsad123");
   res.json(users);
 });
 
