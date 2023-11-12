@@ -1,6 +1,6 @@
-const express = require("express");
 const users = require("../data/users.js");
 const { updateFile } = require("../functions/functions.js");
+const express = require("express");
 router = express.Router();
 
 router.post("/", (req, res) => {
@@ -39,11 +39,11 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  const user = users.find((user) => user.id == req.params.id);
+  const user = users.find((user) => user.id === parseInt(req.params.id));
   if (user) {
     res.status(200).json({ user, success: true });
   } else {
-    res.status(400).json({ error: "Insufficient Data", success: false });
+    res.status(404).json({ error: "Not found", success: false });
   }
 });
 
