@@ -1,0 +1,11 @@
+html
+  head
+    title= title
+  body
+    h1= header
+    div 
+      each item, i in items  
+          h3= "Username: " + item.username
+          p= "Description: " + item.description
+          p= "Post Id: " + item.postId 
+          hr

@@ -1,0 +1,11 @@
+html
+  head
+    title= title
+  body
+    h1= header
+    div 
+      each item, i in items  
+          h3= "Title:" + item.title 
+          p= "Description:" + item.description 
+          p= "Username:" + item.username
+          hr

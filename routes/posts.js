@@ -5,10 +5,17 @@ const express = require("express");
 router = express.Router();
 
 router.get("/", (req, res, next) => {
-  res.status(200).json({
-    posts,
-    success: true,
-  });
+  // console.log(posts, "THIS IS THE POSTS");
+  // res.render("posts.pug", {
+  //   title: "Posts",
+  //   posts: posts,
+  //   header: "GET - POSTS",
+  // });
+  // res.status(200).json({
+  //   posts,
+  //   success: true,
+  // });
+
   res.body = posts;
   next();
 });

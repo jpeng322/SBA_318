@@ -4,10 +4,10 @@ const express = require("express");
 
 router = express.Router();
 router.get("/", (req, res, next) => {
-  res.status(200).json({
-    comments,
-    success: true,
-  });
+  // res.status(200).json({
+  //   comments,
+  //   success: true,
+  // });
 
   res.body = comments;
   next();

@@ -4,6 +4,7 @@ const express = require("express");
 router = express.Router();
 
 router.post("/", (req, res, next) => {
+  console.log(req.body, "ROUTER POST")
   const { fname, lname, username, email } = req.body;
   if (fname && lname && username && email) {
     if (users.find((user) => user.email === email)) {
@@ -37,10 +38,10 @@ router.post("/", (req, res, next) => {
 });
 
 router.get("/", (req, res, next) => {
-  res.status(200).json({
-    users,
-    success: true,
-  });
+  // res.status(200).json({
+  //   users,
+  //   success: true,
+  // });
   res.body = users;
   next();
 });
