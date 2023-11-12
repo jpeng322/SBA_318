@@ -76,7 +76,7 @@ app.get("/api/posts", (req, res) => {
   });
 });
 
-app.get("/api/posts", (req, res) => {
+app.get("/api/posts/:id", (req, res) => {
   const post = posts.find((post) => post.id == req.params.id);
   res.status(200).json({
     post,
@@ -99,6 +99,36 @@ app.post("/api/posts", (req, res) => {
     updateFile("./data/posts.js", posts);
     res.status(201).json({
       post,
+      success: true,
+    });
+  } else {
+    res.status(400).json({ error: "Insufficient Data", success: false });
+  }
+});
+
+app.get("/api/comments/:id", (req, res) => {
+  const comment = comments.find((post) => post.id == req.params.id);
+  res.status(200).json({
+    comment,
+    success: true,
+  });
+});
+
+app.post("/api/comments", (req, res) => {
+  const { description, username, postId } = req.body;
+
+  if (description && username && postId) {
+    const comment = {
+      id: comments[comments.length - 1]?.id + 1 || 1,
+      postId,
+      username,
+      description,
+    };
+
+    comments.push(comment);
+    updateFile("./data/comments.js", comments);
+    res.status(201).json({
+      comment,
       success: true,
     });
   } else {
