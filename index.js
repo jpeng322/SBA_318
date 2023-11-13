@@ -8,7 +8,7 @@ const commentsRouter = require("./routes/comments.js");
 app.set("view engine", "pug");
 
 app.get("/", (req, res) => {
-  res.render("index.pug", { title: "Hey", message: "Hello there!" });
+  res.render("index.pug", { title: "Home", message: "Hello there!" });
 });
 
 app.use(express.urlencoded({ extended: true }));
@@ -38,34 +38,25 @@ app.use((req, res, next) => {
   next();
 });
 
-function renderView(req, res, next) {
-  // res.render("index.pug", { title: "Hey", message: "Hello there!" });
-  // console.log(req.url.split("/"))
-  console.log(res.body)
-  if (req.url.split("/").length === 4 && req.url.split("/")[1] === "api" ) {
+function renderView(req, res) {
+  const removeEmptyString = req.url.split("/").filter(item => item !== "")
+  if (removeEmptyString.length === 2 && req.url.split("/")[1] === "api") {
     res.render(`${req.url.split("/")[2]}.pug`, {
       header: `${req.method} - ${req.url.split("/")[2]}`,
-      items: res.body
+      items: res.body,
     });
   }
-  // res.render("posts.pug", {
-  //   title: "Posts",
-  //   posts: posts,
-  //   header: "GET - POSTS",
-  // });
 }
 
-app.use((req, res) => {
-  renderView(req, res)
-})
+app.use((req, res, next) => {
+  renderView(req, res);
+  next();
+});
 
 app.use((req, res) => {
   if (res.statusCode === 200 || res.statusCode === 201) {
-    // console.log(req.method, req.url.split("/")[2]);
-    // console.log("The results are:");
-    // console.log(res.body);
-    // next()
-    // renderView(req, res)
+    console.log("The results are:");
+    console.log(res.body);
   }
 });
 

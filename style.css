@@ -1,0 +1,28 @@
+body {
+  padding: 2rem;
+}
+
+p {
+  color: rgb(88, 88, 88);
+}
+
+h1 {
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.post-container,
+.users-container,
+.comments-container {
+  border: 2px solid black;
+  padding: 1rem;
+  /* text-align: center; */
+  margin: .25rem;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(2, 500px);
+  justify-content: center;
+
+}

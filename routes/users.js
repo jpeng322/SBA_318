@@ -4,7 +4,6 @@ const express = require("express");
 router = express.Router();
 
 router.post("/", (req, res, next) => {
-  console.log(req.body, "ROUTER POST")
   const { fname, lname, username, email } = req.body;
   if (fname && lname && username && email) {
     if (users.find((user) => user.email === email)) {
@@ -25,11 +24,13 @@ router.post("/", (req, res, next) => {
     };
     users.push(user);
     updateFile("./data/users.js", users);
-    res.status(201).json({
-      user,
-      success: true,
-    });
+    // res.status(201).json({
+    //   user,
+    //   success: true,
+    // });
     res.body = user
+    res.status(201).redirect("/")
+   
   } else {
     res.status(400);
   }

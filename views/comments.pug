@@ -1,11 +1,13 @@
 html
   head
+    style
+      include ../style.css
     title= title
   body
     h1= header
-    div 
+    div.container 
       each item, i in items  
+        div.comments-container
           h3= "Username: " + item.username
           p= "Description: " + item.description
           p= "Post Id: " + item.postId 
-          hr
